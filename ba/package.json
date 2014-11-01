@@ -1,0 +1,14 @@
+{
+  "name": "HelloWorld",
+  "main": "index.html",
+  "description": "demo app of node-webkit",
+  "version": "1.0",
+  "window": {
+    "title": "Test",
+    "toolbar": false,
+    "show": true,
+    "position": "center",
+    "width": 1000,
+    "height": 800
+  }
+}
