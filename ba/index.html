@@ -27,6 +27,8 @@
   </tr>
   </table>
   
+<a href="javascript:writeToFile('PREMIUM','1asdfasdfasdf');">(writeToFile)</a>
+<a href="javascript:readFromFile();">(readFromFile)</a>
 </body>
 
 </html>
@@ -63,6 +65,32 @@ else if (parms['function'] == 'Activate')
   
 }
 
+// This section is for reading and writing from our license file.
+//
+// licenseFileData is a global variable for storing data from the license file
+licenseFileData = null;
+var fs = require('fs');
+var licenseFilename = "BitActivate.json";
+function writeToFile(feature, transaction) {
+  var data = JSON.stringify({"feature":feature, "txnId":transaction});
+  fs.writeFile(licenseFilename, data, function(err) {
+    if (err) {
+      throw "Something's wrong: " + err;
+    } else {
+      console.log("The file was saved.");
+    }
+  });
+}
+function readFromFile() {
+  fs.readFile(licenseFilename, "utf8", function(err, data) {
+    if(err) {
+      throw "Something's wrong: " + err;
+    } else {
+      console.log("Got this data from the license file: " + data);
+      licenseFileData = JSON.parse(data);
+    }
+  });
+}
 </script>
 
 
