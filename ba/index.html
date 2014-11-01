@@ -34,4 +34,20 @@
 </html>
 <script>
 var gui = require('nw.gui');
+console.log(gui.App.argv);
+parms = JSON.parse(gui.App.argv[0]);
+console.log(parms['feature']);
+console.log(parms['function']);
+console.log(parms['address']);
+console.log(parms['price']);
+console.log(parms['currency']);
+if (parms['function'] == 'IsActive')
+{
+
+}
+else if (parms['function'] == 'Activate')
+{
+  //document.getElement('price').innerHTML = parms['price']
+}
+
 </script>

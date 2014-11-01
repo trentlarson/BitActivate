@@ -5,7 +5,7 @@
   "version": "1.0",
   "window": {
     "title": "Test",
-    "toolbar": false,
+    "toolbar": true,
     "show": true,
     "position": "center",
     "width": 1000,
