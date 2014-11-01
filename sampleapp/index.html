@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hello to you, World!</title>
+    <title>Sample</title>
+  <script src="./lib/jquery-2.1.1.min.js"></script>
   <script>
+    $('#waitOnActivate').hide();
+
+    console.log($('#waitOnActivate').length);
+    console.log($('*'));
+    console.log($('*').length);
+    console.log($('*:input').length);
+    console.log($('*:image').length);
+
     var spawn = require('child_process').spawn;
 
     function spawnOther() {
+      $('#waitOnActivate').show();
       //ls = spawn('/Users/tlarson/bin/node-webkit-v0.10.5-osx-x64/node-webkit.app/Contents/MacOS/node-webkit', ['lic']);
       ls = spawn('c:/nw/nw.exe', ['../ba', '{"function":"Activate","feature":"PREMIUM", "description":"A Premium Feature", "address":"1DNWKU4WABPyPPTD6yWcTQbA85ViGQGjNE","price":2.95,"currency":"USD"}']);
       
@@ -26,8 +36,8 @@
   </script>
   </head>
   <body>
-    <h1>Hello, World!</h1>
-    We are using node.js <script>document.write(process.version)</script>.
-    <a href="#" onclick="javascript:spawnOther();">(run another)</a>
+    <h1>Sample app!</h1>
+    <a href="#" onclick="javascript:spawnOther();">(check)</a>
+    <img id="waitOnActivate" src="http://opengraphicdesign.com/wp-content/uploads/2009/01/loadera64.gif" height="20" width="20"/>
   </body>
 </html>
