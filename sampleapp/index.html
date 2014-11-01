@@ -32,7 +32,10 @@
       if (code == 0) {
         $('#accessDenied').hide();
         $('#payNow').hide();
+        $('#pleasePay').hide();
         $('#premiumPanel').removeClass("panel-danger");
+
+        $('#thanksPay').show();
         $('#premiumPanel').addClass("panel-success");
       }
     });
@@ -40,13 +43,15 @@
 
   $( document ).ready(function() {
     $('#waitOnActivate').hide();
+    $('#thanksPay').hide();
   });
   </script>
   </head>
   <body>
     <h1>My Awesome App</h1>
     <div style="text-align:center;">
-      <strong>Hi!  I hope you will pay Bitcoin for my premium features.  :-)</strong>
+      <span id="pleasePay"><strong>Hi!  I hope you will pay Bitcoin for my premium features.  :-)</strong></span>
+      <span id="thanksPay" class="alert-success"><strong>Thanks for your payment!  Enjoy your premium features.</strong></span>
     </div>
     <div class="panel panel-primary">
       <div class="panel-heading">Free Features</div>
