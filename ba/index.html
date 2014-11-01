@@ -7,23 +7,27 @@
   <tr>
   <td>
   <div id='qrloc'>
-  <img src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=1ac' id='qr'>
+  <img src='' id='qr'>
   </div>
   <font size=-1><div id='address'></div></font>
   </td>
-  <td>
+  <td style="padding-left: 20px;">
   <font size=7 color=blue>  
   <div id='descriptionloc'>
-  Activate <strong><span id=description>Premium feature A</span></strong>
+  Activate <strong><span id=description></span></strong>
   </div>
+  <br>
   <div id='priceloc'>
-  Price in USD <strong><span id=price>$2.00</span></strong>
+  Price in USD <strong><span id=price>$0.00</span></strong>
   </div>
   <div id='bitsloc'>
-  Pay In Bits <strong><span id=bits>0</span> bits</strong> <font size=3>(<span id=btc></span> BTC)</font>
+  Pay exactly <strong><span id=bits>0</span> bits</strong> <font size=3>(<span id=btc></span> BTC)</font>
   </div>
   </td>
   <font>
+  </tr>
+  <tr>
+  <td colspan=2 align=right><span id=clock></span><img src='cancel-button.png' onclick='feature_cancel();'></td>
   </tr>
   </table>
   
@@ -33,9 +37,14 @@
 
 </html>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+
 <script>
 var gui = require('nw.gui');
 
+//Resize the window
+window.resizeTo(1000,440);
+
+//Debug logging
 console.log(process.execPath);
 console.log(gui.App.argv);
 parms = JSON.parse(gui.App.argv[0]);
@@ -44,26 +53,42 @@ console.log(parms['function']);
 console.log(parms['address']);
 console.log(parms['price']);
 console.log(parms['currency']);
+
+
 if (parms['function'] == 'IsActive')
 {
 
 }
 else if (parms['function'] == 'Activate')
 {
+  var btc_amount;
+  parms['address'] = '1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P';   //Temporary
+  document.getElementById('qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=270x270&data=' + parms['address'];
   document.getElementById('description').innerHTML = parms['description'];
-  document.getElementById('price').innerHTML = parms['price'];
+  document.getElementById('price').innerHTML = '$'+parms['price'];
   $.ajax({
     url : "https://blockchain.info/tobtc?currency=USD&value=" + parms['price'],
     success : function(usdtobtc){
-        document.getElementById('bits').innerHTML = usdtobtc * 1000000;
-		document.getElementById('btc').innerHTML = usdtobtc;
+	    var feature_index = 323;
+	    btc_amount = Math.round(usdtobtc * 100000) / 100000;
+		btc_amount += feature_index / 100000000;
+        document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
+		document.getElementById('btc').innerHTML = btc_amount;
     }
 	});
 
-  //document.getElementById('address').innerHTML = '<a href=bitcoin:'+parms['address']+'?amount='+usdtobtc+'>'+ parms['address'] + '</a>';	
+  document.getElementById('address').innerHTML = '<a href=bitcoin:'+parms['address']+'?amount='+btc_amount+'>'+ parms['address'] + '</a>';	
   //alert(sha256(parms['feature']));
+
+  //Watch for payment to show up - every second look for a payment using chain.com
+  setInterval(function(){watch_for_payment(parms['address'], btc_amount * 100000000);}, 2000);  
+
+  //Increment the clock
+  //setInterval(function(){show_clock(Date(n.getFullYear(), n.getMonth(), n.getDate(), n.getHours(), n.getMinutes(), n.getSeconds(), n.getMilliseconds())+1000);}, 1000);  
+  
   
 }
+
 
 // This section is for reading and writing from our license file.
 //
@@ -90,6 +115,54 @@ function readFromFile() {
       licenseFileData = JSON.parse(data);
     }
   });
+}
+
+function watch_for_payment(address, satoshis)
+{
+    var api_key_id = 'DEMO-4a5e1e4';
+    var addr = address;
+    var url = 'https://api.chain.com/v2/bitcoin/addresses/'+address+'/transactions';
+    $.ajax({
+      url: url,
+      data: {'api-key-id': api_key_id},
+      type: 'GET',
+      success: function(data) {
+	    payment = JSON.parse(data);
+        console.log(data);
+		console.log(payment);
+		console.log('Watching for ' + satoshis + ' satoshis');
+		//Need loop here for all transactions
+		if (payment[0]['outputs'][0]['addresses'] == address)
+		{
+		  console.log('Found ' + payment[0]['outputs'][0]['value']);
+		  //if (payment['value'] == satoshis)
+		  //  feature_paid();
+		}
+      }
+    });
+}
+
+function feature_paid()
+{
+  document.getElementById('priceloc').innerHTML = '<font color=green>PAID</font>';
+  document.getElementById('bitsloc').innerHTML = '';
+  setTimeout(function(){javascript:exit(0);}, 2000);  
+}
+
+function feature_cancel()
+{
+  document.getElementById('priceloc').innerHTML = '<font size=10 color=red>CANCELLED</font>';
+  document.getElementById('bitsloc').innerHTML = '';
+  setTimeout(function(){javascript:process.exit(1);}, 2000);  
+}
+
+//Skip for now
+function show_clock(end_time)
+{
+  var currentTime = new Date(n.getFullYear(), n.getMonth(), n.getDate(), n.getHours(), n.getMinutes(), n.getSeconds(), n.getMilliseconds());
+  var diff = endtime - currentTime;
+  document.getElementById('clock').innerHTML = "test";//diff.c_str();
+
 }
 </script>
 
