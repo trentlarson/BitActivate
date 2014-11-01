@@ -27,8 +27,14 @@
     });
 
     baProc.on('close', function (code) {
-      console.log('child process exited with code ' + code);
+      console.log('BitActivate library exited with code ' + code);
       $('#waitOnActivate').hide();
+      if (code == 0) {
+        $('#accessDenied').hide();
+        $('#payNow').hide();
+        $('#premiumPanel').removeClass("panel-danger");
+        $('#premiumPanel').addClass("panel-success");
+      }
     });
   }
 
@@ -53,7 +59,7 @@
 	</ul>
       </div>
     </div>
-    <div class="panel panel-danger">
+    <div id="premiumPanel" class="panel panel-danger">
       <div class="panel-heading">Paid Premium Features</div>
       <div class="panel-body">
 	<div style="row">
@@ -66,9 +72,11 @@
 	    </ul>
 	  </div>
 	  <div class="col-md-8">
-	    <img src="lib/access-denied.jpeg" height="100">
-	    <a href="#" onclick="javascript:spawnOther();">Pay now.</a>
-	    <img id="waitOnActivate" src="lib/loadera64.gif" height="15" width="15"/>
+	    <img id="accessDenied" src="lib/access-denied.jpeg" height="100">
+	    <a href="#" onclick="javascript:spawnOther();">
+	      <img id="payNow" src="lib/pay-now.png" height="100">
+	    </a>
+	    <img id="waitOnActivate" src="lib/loadera64.gif" height="30" width="30"/>
 	  </div>
 	</div>
       </div>
