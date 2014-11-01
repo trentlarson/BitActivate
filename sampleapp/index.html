@@ -29,7 +29,9 @@
     baProc.on('close', function (code) {
       console.log('BitActivate library exited with code ' + code);
       $('#waitOnActivate').hide();
-      if (code == 0) {
+      if (code == 0 || code == 1) {
+        // they closed the window or cancelled, so do nothing
+      } else if (code == 99) {
         $('#accessDenied').hide();
         $('#payNow').hide();
         $('#pleasePay').hide();
@@ -37,6 +39,8 @@
 
         $('#thanksPay').show();
         $('#premiumPanel').addClass("panel-success");
+      } else {
+        console.log("Ack!  BitActivate gave me this unrecognized code: " + code);
       }
     });
   }
