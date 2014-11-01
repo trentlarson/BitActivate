@@ -96,6 +96,7 @@ else if (parms['function'] == 'Activate')
 licenseFileData = null;
 var fs = require('fs');
 var licenseFilename = "BitActivate.json";
+//var licenseFilename = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/BitActivate.json";
 function writeToFile(feature, transaction) {
   var data = JSON.stringify({"feature":feature, "txnId":transaction});
   fs.writeFile(licenseFilename, data, function(err) {
