@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello to you, World!</title>
+  <script>
+    var spawn = require('child_process').spawn;
+
+    function spawnOther() {
+      ls = spawn('/Users/tlarson/bin/node-webkit-v0.10.5-osx-x64/node-webkit.app/Contents/MacOS/node-webkit', ['lic']);
+      
+      ls.stdout.on('data', function (data) {
+        console.log('stdout: ' + data);
+        result = JSON.parse(data);
+        console.log("result is: " + result.result);
+      });
+
+      ls.stderr.on('data', function (data) {
+        console.log('stderr: ' + data);
+      });
+
+      ls.on('close', function (code) {
+        console.log('child process exited with code ' + code);
+      });
+    }
+  </script>
+  </head>
+  <body>
+    <h1>Hello, World!</h1>
+    We are using node.js <script>document.write(process.version)</script>.
+    <a href="#" onclick="javascript:spawnOther();">(run another)</a>
+  </body>
+</html>
