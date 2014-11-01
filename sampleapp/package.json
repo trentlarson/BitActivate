@@ -1,4 +1,11 @@
 {
   "name": "sample-app-demo",
-  "main": "index.html"
+  "main": "index.html",
+  "window": {
+    "toolbar": true,
+    "show": true,
+    "position": "center",
+    "width": 1000,
+    "height": 500
+  }
 }
