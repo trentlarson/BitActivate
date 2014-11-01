@@ -6,7 +6,8 @@
     var spawn = require('child_process').spawn;
 
     function spawnOther() {
-      ls = spawn('/Users/tlarson/bin/node-webkit-v0.10.5-osx-x64/node-webkit.app/Contents/MacOS/node-webkit', ['lic']);
+      //ls = spawn('/Users/tlarson/bin/node-webkit-v0.10.5-osx-x64/node-webkit.app/Contents/MacOS/node-webkit', ['lic']);
+      ls = spawn('c:/nw/nw.exe', ['../ba', '{"function":"IsActive","feature":"PREMIUM","price":2.95,"currency":"USD"}']);
       
       ls.stdout.on('data', function (data) {
         console.log('stdout: ' + data);
