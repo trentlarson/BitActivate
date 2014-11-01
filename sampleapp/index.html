@@ -9,19 +9,19 @@
   function spawnOther() {
     $('#waitOnActivate').show();
     var nwProc = process.execPath;
-    ls = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"PREMIUM", "description":"A Premium Feature", "address":"1DNWKU4WABPyPPTD6yWcTQbA85ViGQGjNE","price":2.95,"currency":"USD"}']);
+    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"PREMIUM", "description":"A Premium Feature", "address":"1DNWKU4WABPyPPTD6yWcTQbA85ViGQGjNE","price":2.95,"currency":"USD"}']);
 
-    ls.stdout.on('data', function (data) {
+    baProc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
       result = JSON.parse(data);
       console.log("result is: " + result.result);
     });
 
-    ls.stderr.on('data', function (data) {
+    baProc.stderr.on('data', function (data) {
       console.log('stderr: ' + data);
     });
 
-    ls.on('close', function (code) {
+    baProc.on('close', function (code) {
       console.log('child process exited with code ' + code);
       $('#waitOnActivate').hide();
     });
