@@ -4,8 +4,8 @@
   "description": "demo app of node-webkit",
   "version": "1.0",
   "window": {
-    "title": "Test",
-    "toolbar": true,
+    "title": "BitActivate",
+    "toolbar": false,
     "show": false,
     "position": "center",
     "width": 10,

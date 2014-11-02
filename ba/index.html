@@ -2,7 +2,7 @@
 <head>
   <title> BitActivate </title>
 </head>
-<body style='font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; font-weight: 300;  '>
+<body style='font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; font-weight: 300; background-color:lightgray; '>
   <table>
   <tr height=270>
   <td width=270>
@@ -150,7 +150,6 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
       type: 'GET',
       success: function(data) {
         payment = JSON.parse(data);
-        console.log(data);
         console.log(payment);
         console.log('Watching for ' + satoshis + ' satoshis');
         //Loop over all the transactions
