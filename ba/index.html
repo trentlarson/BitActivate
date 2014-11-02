@@ -33,6 +33,7 @@
   
 <a href="javascript:writeToFile('PREMIUM','1asdfasdfasdf');">(writeToFile)</a>
 <a href="javascript:readFromFile();">(readFromFile)</a>
+<a href="javascript:alert(getFeatureHashForDetectingPayment(parms['feature']))">(calculatePriceWithHash)</a>
 </body>
 
 </html>
@@ -117,6 +118,15 @@ function readFromFile() {
     }
   });
 }
+
+
+function getFeatureHashForDetectingPayment(feature) {
+  var sha = sha256(feature);
+  var last4hex = sha.substring(sha.length-1-4);
+  var threeDecimals = parseInt(last4hex, 16) % 1000;
+  return threeDecimals;
+}
+
 
 function watch_for_payment(address, satoshis)
 {
