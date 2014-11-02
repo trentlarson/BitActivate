@@ -21,7 +21,7 @@
   Price in USD <strong><span id=price>$0.00</span></strong>
   </div>
   <div id='bitsloc'>
-  Pay exactly <strong><span id=bits>0</span> bits</strong> <font size=3>(<span id=btc></span> BTC)</font>
+  Pay exactly <strong><span id=bits>0</span> bits</strong> <font size=4>(<span id=btc></span> BTC)</font>
   </div>
   </td>
   <font>
@@ -56,7 +56,7 @@ $( document ).ready(function() {
 
   if (parms['function'] == 'IsActive')
   {
-    //win.hide();
+    win.hide();
     license = readFromFile();
     if (license &&
         (license['feature'] == parms['feature']))
@@ -82,11 +82,11 @@ $( document ).ready(function() {
     $.ajax({
       url : "https://blockchain.info/tobtc?currency=USD&value=" + parms['price'],
       success : function(usdtobtc){
-        var feature_index = getFeatureHashForDetectingPayment(parms['feature']);
-        btc_amount = Math.round(usdtobtc * 100000) / 100000;
-        btc_amount += feature_index / 100000000;
-        document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
-        document.getElementById('btc').innerHTML = btc_amount;
+	      var feature_index = getFeatureHashForDetectingPayment(parms['feature']);
+	      btc_amount = Math.round(usdtobtc * 100000) / 100000;
+		  btc_amount += feature_index / 100000000;
+	      document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
+		  document.getElementById('btc').innerHTML = Math.round(btc_amount * 100000000) / 10000000;
       }
     });
 
@@ -94,7 +94,7 @@ $( document ).ready(function() {
     //alert(sha256(parms['feature']));
 
     //Watch for payment to show up - every second look for a payment using chain.com
-    setInterval(function(){watch_for_payment(parms['address'], btc_amount * 100000000, parms['feature']);}, 2000);  
+    setInterval(function(){watch_for_payment(parms['address'], Math.round(btc_amount * 100000000), parms['feature']);}, 2000);  
 
     //Increment the clock
     //setInterval(function(){show_clock(Date(n.getFullYear(), n.getMonth(), n.getDate(), n.getHours(), n.getMinutes(), n.getSeconds(), n.getMilliseconds())+1000);}, 1000);  
@@ -180,7 +180,7 @@ function watch_for_payment(address, satoshis, feature)
 function feature_paid(feature, transaction)
 {
   writeToFile(feature, transaction);
-  document.getElementById('priceloc').innerHTML = '<font color="green">PAID</font>';
+  document.getElementById('priceloc').innerHTML = '<font size=10 color="green">PAID</font>';
   document.getElementById('bitsloc').innerHTML = '';
   setTimeout(function(){javascript:process.exit(99);}, 2000);  
 }

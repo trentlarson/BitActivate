@@ -1,14 +1,14 @@
 {
-  "name": "HelloWorld",
+  "name": "BitActivate",
   "main": "index.html",
   "description": "demo app of node-webkit",
   "version": "1.0",
   "window": {
     "title": "Test",
     "toolbar": true,
-    "show": true,
+    "show": false,
     "position": "center",
-    "width": 1000,
-    "height": 800
+    "width": 10,
+    "height": 10
   }
 }
