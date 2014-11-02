@@ -8,6 +8,7 @@ Remaining tasks:
 -- the isActive checks in sampleapp index.html will not work since they're never being set
 -- remove hard-coded FEATURE_SET[0] references
 -- optimization: make one call to library for all features (instead of calling one-by-one, at startup)
+- handle network error gracefully
 - use new address before demo (so there's no chance of a chain API result that's too large)
 - get address from a judge during demo?  :-)
 - HD wallet?

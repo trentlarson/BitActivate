@@ -12,7 +12,7 @@
   var spawn = require('child_process').spawn;
   var FEATURE_SET = [
     {code:"PREMIUM_SERVICE", desc:"Premium Service Silver", price:0.25, currency:"USD", isActive:false},
-    {code:"PREMIUM_FEATURE", desc:"Premium Feature Gold", price:199, currency:"EUR", isActive:false}
+    {code:"PREMIUM_FEATURE", desc:"Premium Feature Gold", price:199.95, currency:"EUR", isActive:false}
   ];
 
   function findFeature(code) {
@@ -42,6 +42,7 @@
       if (exitCode == 0 || exitCode == 1) {
 	// they closed the window or cancelled, so do nothing
       } else if (exitCode == 99) {
+        insideFeature.isActive = true;
 
 	if (showThanks) {
 	  $('#thanksPay').show();
