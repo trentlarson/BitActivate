@@ -136,7 +136,7 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
 {
     var api_key_id = 'DEMO-4a5e1e4';
     var addr = address;
-	var transaction;
+	var transaction='';
     var url = 'https://api.chain.com/v2/bitcoin/addresses/'+address+'/transactions';
     $.ajax({
       url: url,
@@ -161,9 +161,14 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
                 console.log('Found ' + payment[i]['outputs'][j]['value']);
                 if (payment[i]['outputs'][j]['value'] == satoshis)
                 {
-				  console.log('Yep - satoshis matched');
-                  transaction = payment[i]['outputs'][j]['transaction_hash'];
-				  if (!precheck)
+ 			      console.log('Yep - satoshis matched');
+				  if (precheck)
+				  {
+				    if (transaction == '')
+                      transaction = payment[i]['outputs'][j]['transaction_hash'];
+					break;
+				  }
+				  else
 				  {
 				    //We found a transaction for the same amount in the precheck, so it can't be the new payment, so return
 				    if (found_payment_transaction == payment[i]['outputs'][j]['transaction_hash'])
