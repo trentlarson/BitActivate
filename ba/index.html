@@ -56,7 +56,7 @@ $( document ).ready(function() {
   if (parms['function'] == 'IsActive')
   {
     win.hide();
-    license = readFromFile();
+    license = readFromFile(parms['feature']);
     if (license &&
         (license['feature'] == parms['feature']))
     {
@@ -125,10 +125,10 @@ var licenseFilename = "BitActivate.json";
 //var licenseFilename = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/BitActivate.json";
 function writeToFile(feature, transaction) {
   var data = JSON.stringify({"feature":feature, "txnId":transaction});
-  fs.writeFileSync(licenseFilename, data);
+  fs.writeFileSync(licenseFilename + feature, data);
 }
-function readFromFile() {
-  if (!fs.existsSync(licenseFilename)) {
+function readFromFile(feature) {
+  if (!fs.existsSync(licenseFilename + feature)) {
     return null;
   } else {
     var data = fs.readFileSync(licenseFilename, "utf8");
