@@ -82,15 +82,15 @@ $( document ).ready(function() {
     $.ajax({
       url : "https://blockchain.info/tobtc?currency=USD&value=" + parms['price'],
       success : function(usdtobtc){
-	      var feature_index = getFeatureHashForDetectingPayment(parms['feature']);
-	      btc_amount = Math.round(usdtobtc * 100000) / 100000;
-		  btc_amount += feature_index / 100000000;
-	  document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
-		  document.getElementById('btc').innerHTML = btc_amount;
+        var feature_index = getFeatureHashForDetectingPayment(parms['feature']);
+        btc_amount = Math.round(usdtobtc * 100000) / 100000;
+        btc_amount += feature_index / 100000000;
+        document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
+        document.getElementById('btc').innerHTML = btc_amount;
       }
-	  });
+    });
 
-    document.getElementById('address').innerHTML = '<a href=bitcoin:'+parms['address']+'?amount='+btc_amount+'>'+ parms['address'] + '</a>';	
+    document.getElementById('address').innerHTML = '<a href=bitcoin:'+parms['address']+'?amount='+btc_amount+'>'+ parms['address'] + '</a>';
     //alert(sha256(parms['feature']));
 
     //Watch for payment to show up - every second look for a payment using chain.com
@@ -150,7 +150,7 @@ function watch_for_payment(address, satoshis, feature)
       data: {'api-key-id': api_key_id},
       type: 'GET',
       success: function(data) {
-	    payment = JSON.parse(data);
+        payment = JSON.parse(data);
         console.log(data);
 		console.log(payment);
 		console.log('Watching for ' + satoshis + ' satoshis');

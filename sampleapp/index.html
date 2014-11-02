@@ -48,7 +48,7 @@
   function spawnOther() {
     $('#waitOnActivate').show();
     var nwProc = process.execPath;
-    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"PREMIUM", "description":"A Premium Feature", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":2.95,"currency":"USD"}']);
+    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"PREMIUM", "description":"A Premium Feature", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":0.25,"currency":"USD"}']);
 
     baProc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
@@ -87,7 +87,7 @@
   </script>
   </head>
   <body>
-    <h1>My Awesome App</h1>
+    <h1>A Sample Application</h1>
     <div style="text-align:center;">
       <span id="pleasePay"><strong>Hi!  I hope you will pay Bitcoin for my premium features.  :-)</strong></span>
       <span id="thanksPay" class="alert-success"><strong>Thanks for your payment!  Enjoy your premium features.</strong></span>
