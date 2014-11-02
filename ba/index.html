@@ -52,11 +52,6 @@ $( document ).ready(function() {
   console.log(process.execPath);
   console.log(gui.App.argv);
   parms = JSON.parse(gui.App.argv[0]);
-  console.log(parms['feature']);
-  console.log(parms['function']);
-  console.log(parms['address']);
-  console.log(parms['price']);
-  console.log(parms['currency']);
 
 
   if (parms['function'] == 'IsActive')
@@ -112,8 +107,6 @@ $( document ).ready(function() {
 
 // This section is for reading and writing from our license file.
 //
-// licenseFileData is a global variable for storing data from the license file
-licenseFileData = null;
 var fs = require('fs');
 var licenseFilename = "BitActivate.json";
 //var licenseFilename = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/BitActivate.json";
@@ -128,15 +121,8 @@ function writeToFile(feature, transaction) {
   });
 }
 function readFromFile() {
-  fs.readFileSync(licenseFilename, "utf8", function(err, data) {
-    if(err) {
-      throw "Something's wrong: " + err;
-    } else {
-      console.log("Got this data from the license file: " + data);
-      licenseFileData = JSON.parse(data);
-    }
-  });
-  return(licenseFileData);
+  var data = fs.readFileSync(licenseFilename, "utf8");
+  return JSON.parse(data);
 }
 
 
