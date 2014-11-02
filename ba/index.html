@@ -82,11 +82,11 @@ $( document ).ready(function() {
     $.ajax({
       url : "https://blockchain.info/tobtc?currency=USD&value=" + parms['price'],
       success : function(usdtobtc){
-	      var feature_index = getFeatureHashForDetectingPayment(parms['feature']);
-	      btc_amount = Math.round(usdtobtc * 100000) / 100000;
-		  btc_amount += feature_index / 100000000;
-	      document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
-		  document.getElementById('btc').innerHTML = Math.round(btc_amount * 100000000) / 10000000;
+        var feature_index = getFeatureHashForDetectingPayment(parms['feature']);
+        btc_amount = Math.round(usdtobtc * 100000) / 100000;
+        btc_amount += feature_index / 100000000;
+        document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
+        document.getElementById('btc').innerHTML = Math.round(btc_amount * 100000000) / 10000000;
       }
     });
 
@@ -152,27 +152,27 @@ function watch_for_payment(address, satoshis, feature)
       success: function(data) {
         payment = JSON.parse(data);
         console.log(data);
-		console.log(payment);
-		console.log('Watching for ' + satoshis + ' satoshis');
-		//Loop over all the transactions
-		for(var i in payment)
-		{
-		    //Loop over all the outputs in each transaction
-			for (var j in payment[i]['outputs'])
-			{
-			  //If we find our payment address
-			  if (payment[i]['outputs'][j]['addresses'] == address)
-			  {
-			    //Check for the right value
-			    console.log('Found ' + payment[i]['outputs'][j]['value']);
-			    if (payment[i]['outputs'][j]['value'] == satoshis)
-				{
-				  var transaction = payment[i]['outputs'][j]['transaction_hash'];
-			      feature_paid(feature, transaction);
-				}
-			  }
-			}
-		}	
+        console.log(payment);
+        console.log('Watching for ' + satoshis + ' satoshis');
+        //Loop over all the transactions
+        for(var i in payment)
+        {
+            //Loop over all the outputs in each transaction
+            for (var j in payment[i]['outputs'])
+            {
+              //If we find our payment address
+              if (payment[i]['outputs'][j]['addresses'] == address)
+              {
+                //Check for the right value
+                console.log('Found ' + payment[i]['outputs'][j]['value']);
+                if (payment[i]['outputs'][j]['value'] == satoshis)
+                {
+                  var transaction = payment[i]['outputs'][j]['transaction_hash'];
+                  feature_paid(feature, transaction);
+                }
+              }
+            }
+        }
       }
     });
 }
