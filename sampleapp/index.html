@@ -11,6 +11,7 @@
   <script>
   var spawn = require('child_process').spawn;
   var FEATURE_CODE = "PREMIUM_FEATURE";
+  var FEATURE_DESC = "Premium Features";
 
   function checkIsActive() {
     $('#waitOnActivate').show();
@@ -51,7 +52,7 @@
   function spawnOther() {
     $('#waitOnActivate').show();
     var nwProc = process.execPath;
-    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"' + FEATURE_CODE + '", "description":"A Premium Feature", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":0.25,"currency":"USD"}']);
+    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"' + FEATURE_CODE + '", "description":"' + FEATURE_DESC + '", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":0.25,"currency":"USD"}']);
 
     baProc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
@@ -85,6 +86,7 @@
   }
 
   $( document ).ready(function() {
+    $('#feature-desc h2').innerHTML = $('#feature-desc h2').innerHTML + " " + FEATURE_DESC;
     $('#waitOnActivate').hide();
     $('#thanksPay').hide();
     $('.premium').hide();
@@ -110,7 +112,7 @@
       </div>
     </div>
     <div id="premiumPanel" class="panel panel-danger">
-      <div class="panel-heading"><h2>Paid Premium Features</h2></div>
+      <div id="feature-desc" class="panel-heading"><h2>Paid Premium Features</h2></div>
       <div class="panel-body">
 	<div style="row">
 	  <div class="col-md-4">
