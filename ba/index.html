@@ -4,17 +4,17 @@
 </head>
 <body>
   <table>
-  <tr>
-  <td>
+  <tr height=270>
+  <td width=270>
   <div id='qrloc'>
   <img src='' id='qr'>
   </div>
-  <font size=-1><div id='address'></div></font>
+  <font size=-0><div id='address'></div></font>
   </td>
   <td style="padding-left: 20px;">
   <font size=7 color=blue>  
   <div id='descriptionloc'>
-  Activate <strong><span id=description></span></strong>
+  <span id=description></span>
   </div>
   <br>
   <div id='priceloc'>
@@ -37,6 +37,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 
 <script>
+var description;
 
 $( document ).ready(function() {
 
@@ -50,6 +51,7 @@ $( document ).ready(function() {
   console.log(gui.App.argv);
   parms = JSON.parse(gui.App.argv[0]);
 
+  
 
   if (parms['function'] == 'IsActive')
   {
@@ -75,7 +77,8 @@ $( document ).ready(function() {
 	var found_payment_transaction;
     parms['address'] = '1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P';   //Temporary
 
-    document.getElementById('description').innerHTML = parms['description'];
+	description = parms['description'];
+    document.getElementById('description').innerHTML = 'Activate <strong>' + description + '</strong>';
     document.getElementById('price').innerHTML = '$'+parms['price'];
     $.ajax({
       url : "https://blockchain.info/tobtc?currency=USD&value=" + parms['price'],
@@ -200,6 +203,7 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
 function feature_paid(feature, transaction)
 {
   writeToFile(feature, transaction);
+  document.getElementById('description').innerHTML = '<strong>' + description + '</strong> Activated';
   document.getElementById('priceloc').innerHTML = '<font size=10 color="green">PAID</font>';
   document.getElementById('bitsloc').innerHTML = '';
   setTimeout(function(){javascript:process.exit(99);}, 2000);  
