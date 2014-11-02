@@ -162,10 +162,11 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
                 if (payment[i]['outputs'][j]['value'] == satoshis)
                 {
  			      console.log('Yep - satoshis matched');
+				  if (transaction == '')
+                    transaction = payment[i]['outputs'][j]['transaction_hash'];	
+					
 				  if (precheck)
 				  {
-				    if (transaction == '')
-                      transaction = payment[i]['outputs'][j]['transaction_hash'];
 					break;
 				  }
 				  else
