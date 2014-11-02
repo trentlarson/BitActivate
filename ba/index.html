@@ -2,7 +2,7 @@
 <head>
   <title> BitActivate </title>
 </head>
-<body>
+<body style='font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; font-weight: 300; background-color:lightgray; '>
   <table>
   <tr height=270>
   <td width=270>
@@ -70,7 +70,7 @@ $( document ).ready(function() {
   else if (parms['function'] == 'Activate')
   {
     //Resize the window
-    window.resizeTo(1000,440);
+    window.resizeTo(1100,450);
     win.show();
 
     var btc_amount;
@@ -151,7 +151,6 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
       type: 'GET',
       success: function(data) {
         payment = JSON.parse(data);
-        console.log(data);
         console.log(payment);
         console.log('Watching for ' + satoshis + ' satoshis');
         //Loop over all the transactions
