@@ -31,9 +31,6 @@
   </tr>
   </table>
   
-<a href="javascript:writeToFile('PREMIUM','1asdfasdfasdf');">(writeToFile)</a>
-<a href="javascript:readFromFile();">(readFromFile)</a>
-<a href="javascript:alert(getFeatureHashForDetectingPayment(parms['feature']))">(calculatePriceWithHash)</a>
 </body>
 
 </html>
@@ -75,6 +72,7 @@ $( document ).ready(function() {
     win.show();
 
     var btc_amount;
+	var found_payment_transaction;
     parms['address'] = '1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P';   //Temporary
 
     document.getElementById('description').innerHTML = parms['description'];
@@ -87,17 +85,14 @@ $( document ).ready(function() {
         btc_amount += feature_index / 100000000;
         document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
         document.getElementById('btc').innerHTML = Math.round(btc_amount * 100000000) / 10000000;
+		found_payment_transaction = watch_for_payment(parms['address'], Math.round(btc_amount * 100000000), parms['feature'], '', true);
       }
     });
-
-	found_payment_transaction = watch_for_payment(parms['address'], Math.round(btc_amount * 100000000), parms['feature'], '', true);
 
     document.getElementById('qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=270x270&data=' + parms['address'];
     document.getElementById('address').innerHTML = '<a href=bitcoin:'+parms['address']+'?amount='+btc_amount+'>'+ parms['address'] + '</a>';
     //alert(sha256(parms['feature']));
 
-    //Watch for payment to show up - every second look for a payment using chain.com
-    setInterval(function(){watch_for_payment(parms['address'], Math.round(btc_amount * 100000000), parms['feature'], found_payment_transaction, false);}, 2000);  
 
     //Increment the clock
     //setInterval(function(){show_clock(Date(n.getFullYear(), n.getMonth(), n.getDate(), n.getHours(), n.getMinutes(), n.getSeconds(), n.getMilliseconds())+1000);}, 1000);  
@@ -116,13 +111,7 @@ var licenseFilename = "BitActivate.json";
 //var licenseFilename = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/BitActivate.json";
 function writeToFile(feature, transaction) {
   var data = JSON.stringify({"feature":feature, "txnId":transaction});
-  fs.writeFile(licenseFilename, data, function(err) {
-    if (err) {
-      throw "Something's wrong: " + err;
-    } else {
-      console.log("The file was saved.");
-    }
-  });
+  fs.writeFileSync(licenseFilename, data);
 }
 function readFromFile() {
   if (!fs.existsSync(licenseFilename)) {
@@ -147,9 +136,11 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
 {
     var api_key_id = 'DEMO-4a5e1e4';
     var addr = address;
+	var transaction;
     var url = 'https://api.chain.com/v2/bitcoin/addresses/'+address+'/transactions';
     $.ajax({
       url: url,
+	  async: false,
       data: {'api-key-id': api_key_id},
       type: 'GET',
       success: function(data) {
@@ -170,13 +161,9 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
                 console.log('Found ' + payment[i]['outputs'][j]['value']);
                 if (payment[i]['outputs'][j]['value'] == satoshis)
                 {
-                  var transaction = payment[i]['outputs'][j]['transaction_hash'];
-				  if (precheck)
-				  {
-				    alert(transaction);
-				    return(transaction);
-				  }
-				  else
+				  console.log('Yep - satoshis matched');
+                  transaction = payment[i]['outputs'][j]['transaction_hash'];
+				  if (!precheck)
 				  {
 				    //We found a transaction for the same amount in the precheck, so it can't be the new payment, so return
 				    if (found_payment_transaction == payment[i]['outputs'][j]['transaction_hash'])
@@ -189,8 +176,15 @@ function watch_for_payment(address, satoshis, feature, found_payment_transaction
               }
             }
         }
+		if (precheck)
+		{
+		  //Watch for payment to show up - every second look for a payment using chain.com
+		  setInterval(function(){watch_for_payment(address, satoshis, feature, transaction, false);}, 2000);  
+		}
       }
     });
+
+
 	
   return('');
 }
