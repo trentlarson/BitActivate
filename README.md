@@ -4,7 +4,7 @@ BitLicense
 for Money2020 Hackathon
 
 Remaining tasks:
-- check whether the feature already IsActive when the app starts
+- put in the other address
 - cache the feature & txn in a local file (untrustworthy but faster)
 - HD wallet
 - for multiple features: store in the local file; may change to array result for some methods

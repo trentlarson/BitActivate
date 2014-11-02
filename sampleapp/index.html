@@ -11,6 +11,40 @@
   <script>
   var spawn = require('child_process').spawn;
 
+  function checkIsActive() {
+    $('#waitOnActivate').show();
+
+    var nwProc = process.execPath;
+    baProc = spawn(nwProc, ['../ba', '{"function":"IsActive","feature":"PREMIUM"}']);
+
+    baProc.stdout.on('data', function (data) {
+      console.log('stdout: ' + data);
+      result = JSON.parse(data);
+      console.log("result is: " + result.result);
+    });
+
+    baProc.stderr.on('data', function (data) {
+      console.log('stderr: ' + data);
+    });
+
+    baProc.on('close', function (code) {
+      console.log('BitActivate library exited with code ' + code);
+      $('#waitOnActivate').hide();
+      if (code == 0 || code == 1) {
+        // they closed the window or cancelled, so do nothing
+      } else if (code == 99) {
+        $('#accessDenied').hide();
+        $('#payNow').hide();
+        $('#pleasePay').hide();
+        $('#premiumPanel').removeClass("panel-danger");
+
+        $('#premiumPanel').addClass("panel-primary");
+      } else {
+        console.log("Ack!  BitActivate gave me this unrecognized code: " + code);
+      }
+    });
+  }
+
   function spawnOther() {
     $('#waitOnActivate').show();
     var nwProc = process.execPath;
@@ -48,6 +82,7 @@
   $( document ).ready(function() {
     $('#waitOnActivate').hide();
     $('#thanksPay').hide();
+    checkIsActive();
   });
   </script>
   </head>
