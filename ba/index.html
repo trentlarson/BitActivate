@@ -33,6 +33,7 @@
   
 <a href="javascript:writeToFile('PREMIUM','1asdfasdfasdf');">(writeToFile)</a>
 <a href="javascript:readFromFile();">(readFromFile)</a>
+<a href="javascript:alert(getFeatureHashForDetectingPayment(parms['feature']))">(calculatePriceWithHash)</a>
 </body>
 
 </html>
@@ -106,6 +107,7 @@ else if (parms['function'] == 'Activate')
 licenseFileData = null;
 var fs = require('fs');
 var licenseFilename = "BitActivate.json";
+//var licenseFilename = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/BitActivate.json";
 function writeToFile(feature, transaction) {
   var data = JSON.stringify({"feature":feature, "txnId":transaction});
   fs.writeFile(licenseFilename, data, function(err) {
@@ -127,6 +129,16 @@ function readFromFile() {
   });
   return(licenseFileData);
 }
+
+
+
+function getFeatureHashForDetectingPayment(feature) {
+  var sha = sha256(feature);
+  var last4hex = sha.substring(sha.length-1-4);
+  var threeDecimals = parseInt(last4hex, 16) % 1000;
+  return threeDecimals;
+}
+
 
 function watch_for_payment(address, satoshis, feature)
 {
