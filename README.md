@@ -4,8 +4,9 @@ BitLicense
 for Money2020 Hackathon
 
 Remaining tasks:
-- put in the other address
-- cache the feature & txn in a local file (untrustworthy but faster)
+- clean up the ba/index.html links
+- get startup license check to not flash BA window
+- cache the feature & txn in a local file to check at startup (untrustworthy but faster)
 - HD wallet
 - for multiple features: store in the local file; may change to array result for some methods
 - programmatic config for client app

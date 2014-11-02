@@ -58,7 +58,8 @@ $( document ).ready(function() {
   {
     //win.hide();
     license = readFromFile();
-    if (license['feature'] == parms['feature'])
+    if (license &&
+        (license['feature'] == parms['feature']))
     {
       javascript:process.exit(99);
     }
@@ -121,8 +122,12 @@ function writeToFile(feature, transaction) {
   });
 }
 function readFromFile() {
-  var data = fs.readFileSync(licenseFilename, "utf8");
-  return JSON.parse(data);
+  if (!fs.existsSync(licenseFilename)) {
+    return null;
+  } else {
+    var data = fs.readFileSync(licenseFilename, "utf8");
+    return JSON.parse(data);
+  }
 }
 
 
