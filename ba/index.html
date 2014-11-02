@@ -49,7 +49,7 @@ $( document ).ready(function() {
   //Debug logging
   console.log(process.execPath);
   console.log(gui.App.argv);
-  parms = JSON.parse(gui.App.argv[0]);
+  var parms = JSON.parse(gui.App.argv[0]);
 
   
 
@@ -125,13 +125,16 @@ var licenseFilename = "BitActivate.json";
 //var licenseFilename = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/BitActivate.json";
 function writeToFile(feature, transaction) {
   var data = JSON.stringify({"feature":feature, "txnId":transaction});
-  fs.writeFileSync(licenseFilename + feature, data);
+  var finalFilename = feature + '.' + licenseFilename;
+  fs.writeFileSync(finalFilename, data);
 }
 function readFromFile(feature) {
-  if (!fs.existsSync(licenseFilename + feature)) {
+  var finalFilename = feature + '.' + licenseFilename;
+  if (!fs.existsSync(finalFilename)) {
     return null;
   } else {
-    var data = fs.readFileSync(licenseFilename, "utf8");
+    
+    var data = fs.readFileSync(finalFilename, "utf8");
     return JSON.parse(data);
   }
 }
