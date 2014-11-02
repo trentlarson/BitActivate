@@ -14,7 +14,7 @@
   function spawnOther() {
     $('#waitOnActivate').show();
     var nwProc = process.execPath;
-    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"PREMIUM", "description":"A Premium Feature", "address":"1DNWKU4WABPyPPTD6yWcTQbA85ViGQGjNE","price":2.95,"currency":"USD"}']);
+    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"PREMIUM", "description":"A Premium Feature", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":2.95,"currency":"USD"}']);
 
     baProc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);

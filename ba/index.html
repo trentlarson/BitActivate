@@ -43,6 +43,7 @@ var gui = require('nw.gui');
 
 //Resize the window
 window.resizeTo(1000,440);
+//window.show(true);
 
 //Debug logging
 console.log(process.execPath);
@@ -57,7 +58,16 @@ console.log(parms['currency']);
 
 if (parms['function'] == 'IsActive')
 {
-
+  window.hide();
+  license = readFromFile();
+  if (license['feature'] == parms['feature'])
+  {
+    javascript:process.exit(99);
+  }
+  else
+  {
+    javascript:process.exit(1);
+  }
 }
 else if (parms['function'] == 'Activate')
 {
@@ -81,7 +91,7 @@ else if (parms['function'] == 'Activate')
   //alert(sha256(parms['feature']));
 
   //Watch for payment to show up - every second look for a payment using chain.com
-  setInterval(function(){watch_for_payment(parms['address'], btc_amount * 100000000);}, 2000);  
+  setInterval(function(){watch_for_payment(parms['address'], btc_amount * 100000000, parms['feature']);}, 2000);  
 
   //Increment the clock
   //setInterval(function(){show_clock(Date(n.getFullYear(), n.getMonth(), n.getDate(), n.getHours(), n.getMinutes(), n.getSeconds(), n.getMilliseconds())+1000);}, 1000);  
@@ -107,7 +117,7 @@ function writeToFile(feature, transaction) {
   });
 }
 function readFromFile() {
-  fs.readFile(licenseFilename, "utf8", function(err, data) {
+  fs.readFileSync(licenseFilename, "utf8", function(err, data) {
     if(err) {
       throw "Something's wrong: " + err;
     } else {
@@ -115,9 +125,10 @@ function readFromFile() {
       licenseFileData = JSON.parse(data);
     }
   });
+  return(licenseFileData);
 }
 
-function watch_for_payment(address, satoshis)
+function watch_for_payment(address, satoshis, feature)
 {
     var api_key_id = 'DEMO-4a5e1e4';
     var addr = address;
@@ -131,22 +142,35 @@ function watch_for_payment(address, satoshis)
         console.log(data);
 		console.log(payment);
 		console.log('Watching for ' + satoshis + ' satoshis');
-		//Need loop here for all transactions
-		if (payment[0]['outputs'][0]['addresses'] == address)
+		//Loop over all the transactions
+		for(var i in payment)
 		{
-		  console.log('Found ' + payment[0]['outputs'][0]['value']);
-		  //if (payment['value'] == satoshis)
-		  //  feature_paid();
-		}
+		    //Loop over all the outputs in each transaction
+			for (var j in payment[i]['outputs'])
+			{
+			  //If we find our payment address
+			  if (payment[i]['outputs'][j]['addresses'] == address)
+			  {
+			    //Check for the right value
+			    console.log('Found ' + payment[i]['outputs'][j]['value']);
+			    if (payment[i]['outputs'][j]['value'] == satoshis)
+				{
+				  var transaction = payment[i]['outputs'][j]['transaction_hash'];
+			      feature_paid(feature, transaction);
+				}
+			  }
+			}
+		}	
       }
     });
 }
 
-function feature_paid()
+function feature_paid(feature, transaction)
 {
-  document.getElementById('priceloc').innerHTML = '<font color=green>PAID</font>';
+  writeToFile(feature, transaction);
+  document.getElementById('priceloc').innerHTML = '<font color="green">PAID</font>';
   document.getElementById('bitsloc').innerHTML = '';
-  setTimeout(function(){javascript:exit(0);}, 2000);  
+  setTimeout(function(){javascript:process.exit(99);}, 2000);  
 }
 
 function feature_cancel()
