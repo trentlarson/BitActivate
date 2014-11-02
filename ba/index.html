@@ -41,9 +41,8 @@
 
 <script>
 var gui = require('nw.gui');
+var win = gui.Window.get();
 
-//Resize the window
-window.resizeTo(1000,440);
 //window.show(true);
 
 //Debug logging
@@ -59,7 +58,7 @@ console.log(parms['currency']);
 
 if (parms['function'] == 'IsActive')
 {
-  window.hide();
+  win.hide();
   license = readFromFile();
   if (license['feature'] == parms['feature'])
   {
@@ -72,6 +71,10 @@ if (parms['function'] == 'IsActive')
 }
 else if (parms['function'] == 'Activate')
 {
+  //Resize the window
+  window.resizeTo(1000,440);
+  win.show();
+  
   var btc_amount;
   parms['address'] = '1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P';   //Temporary
   document.getElementById('qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=270x270&data=' + parms['address'];
@@ -80,7 +83,7 @@ else if (parms['function'] == 'Activate')
   $.ajax({
     url : "https://blockchain.info/tobtc?currency=USD&value=" + parms['price'],
     success : function(usdtobtc){
-	    var feature_index = 323;
+	    var feature_index = getFeatureHashForDetectingPayment(parms['feature']);
 	    btc_amount = Math.round(usdtobtc * 100000) / 100000;
 		btc_amount += feature_index / 100000000;
         document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
