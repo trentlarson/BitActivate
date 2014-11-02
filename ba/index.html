@@ -85,8 +85,8 @@ $( document ).ready(function() {
 	      var feature_index = getFeatureHashForDetectingPayment(parms['feature']);
 	      btc_amount = Math.round(usdtobtc * 100000) / 100000;
 		  btc_amount += feature_index / 100000000;
-	  document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
-		  document.getElementById('btc').innerHTML = btc_amount;
+	      document.getElementById('bits').innerHTML = Math.round(btc_amount * 100000000) / 100;
+		  document.getElementById('btc').innerHTML = Math.round(btc_amount * 100000000) / 10000000;
       }
 	  });
 
@@ -94,7 +94,7 @@ $( document ).ready(function() {
     //alert(sha256(parms['feature']));
 
     //Watch for payment to show up - every second look for a payment using chain.com
-    setInterval(function(){watch_for_payment(parms['address'], btc_amount * 100000000, parms['feature']);}, 2000);  
+    setInterval(function(){watch_for_payment(parms['address'], Math.round(btc_amount * 100000000), parms['feature']);}, 2000);  
 
     //Increment the clock
     //setInterval(function(){show_clock(Date(n.getFullYear(), n.getMonth(), n.getDate(), n.getHours(), n.getMinutes(), n.getSeconds(), n.getMilliseconds())+1000);}, 1000);  
