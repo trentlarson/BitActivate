@@ -21,7 +21,7 @@
   Price in USD <strong><span id=price>$0.00</span></strong>
   </div>
   <div id='bitsloc'>
-  Pay exactly <strong><span id=bits>0</span> bits</strong> <font size=3>(<span id=btc></span> BTC)</font>
+  Pay exactly <strong><span id=bits>0</span> bits</strong> <font size=4>(<span id=btc></span> BTC)</font>
   </div>
   </td>
   <font>
@@ -56,7 +56,7 @@ $( document ).ready(function() {
 
   if (parms['function'] == 'IsActive')
   {
-    //win.hide();
+    win.hide();
     license = readFromFile();
     if (license &&
         (license['feature'] == parms['feature']))
@@ -180,7 +180,7 @@ function watch_for_payment(address, satoshis, feature)
 function feature_paid(feature, transaction)
 {
   writeToFile(feature, transaction);
-  document.getElementById('priceloc').innerHTML = '<font color="green">PAID</font>';
+  document.getElementById('priceloc').innerHTML = '<font size=10 color="green">PAID</font>';
   document.getElementById('bitsloc').innerHTML = '';
   setTimeout(function(){javascript:process.exit(99);}, 2000);  
 }
