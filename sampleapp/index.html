@@ -87,6 +87,12 @@
     });
   }
 
+  var makeActivateCall = function(feature) {
+    return function() {
+      activateFeature(feature);
+    }
+  }
+
   $( document ).ready(function() {
     $('#waitOnActivate').hide();
     $('#thanksPay').hide();
@@ -100,6 +106,7 @@
       nextFeature.find('input').attr('value', FEATURE_SET[i].desc + " -- Buy!");
       nextFeature.show();
       nextFeature.find('.unpaid').show();
+      nextFeature.find('.unpaid').click(makeActivateCall(FEATURE_SET[i]));
       nextFeature.find('.paid').hide();
       checkIsActive(FEATURE_SET[i]);
     }
