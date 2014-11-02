@@ -10,7 +10,10 @@
 
   <script>
   var spawn = require('child_process').spawn;
-  var FEATURE_SET = [{code:"PREMIUM_FEATURE", desc:"Premium Features", price:0.30, currency:"EUR"}]
+  var FEATURE_SET = [
+    {code:"PREMIUM_FEATURE", desc:"Premium Feature Gold", price:0.25, currency:"EUR"},
+    {code:"PREMIUM_SERVICE", desc:"Premium Service Silver", price:199, currency:"USD"}
+  ];
 
   function checkIsActive(feature) {
     $('#waitOnActivate').show();
@@ -85,11 +88,19 @@
   }
 
   $( document ).ready(function() {
-    $('#feature-desc').text($('#feature-desc').text() + " " + FEATURE_SET[0].desc);
     $('#waitOnActivate').hide();
     $('#thanksPay').hide();
     $('.premium').hide();
+    var featureItem = $('.one-feature');
+    var nextFeature;
     for (var i = 0; i < FEATURE_SET.length; i++) {
+      nextFeature = featureItem.clone();
+      featureItem.after(nextFeature);
+      nextFeature.find('.free').text(FEATURE_SET[i].desc);
+      nextFeature.find('input').attr('value', FEATURE_SET[i].desc);
+      nextFeature.show();
+      nextFeature.find('.free').show();
+      nextFeature.find('.premium').hide();
       checkIsActive(FEATURE_SET[i]);
     }
   });
@@ -113,16 +124,14 @@
       </div>
     </div>
     <div id="premiumPanel" class="panel panel-danger">
-      <div class="panel-heading"><h2><span id="feature-desc">Paid</span></h2></div>
+      <div class="panel-heading"><h2><span id="feature-desc">Paid Premium Features</span></h2></div>
       <div class="panel-body">
 	<div style="row">
 	  <div class="col-md-4">
 	    <span class="free">If you pay, you can have these features, too!</span>
 	    <span class="premium">Now you have these features, too!</span>
 	    <ul>
-	      <li><span class="free">Semper crecis</span><span class="premium"><input type="button" value="Semper crecis"></span></li>
-	      <li><span class="free">Aut decrecis</span><span class="premium"><input type="button" value="Aut decrecis"></span></li>
-	      <li><span class="free">Vita detestabilis</span><span class="premium"><input type="button" value="Vita detestabilis"></span></li>
+	      <li class="one-feature" style="display:none;"><span class="free">Semper crecis</span><span class="premium"><input type="button" value="Semper crecis"></span></li>
 	    </ul>
 	  </div>
 	  <div class="col-md-8">
