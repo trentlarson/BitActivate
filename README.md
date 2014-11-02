@@ -4,8 +4,13 @@ BitLicense
 for Money2020 Hackathon
 
 Remaining tasks:
-- get address from a judge during demo
-- HD wallet
+- multiple features: see cost difference, display difference, only one turned on at a time
+-- allow selction of each
+-- remove hard-coded FEATURE_SET[0] references
+-- optimization: make one call to library for all features (instead of calling one-by-one, at startup)
+- use new address before demo (so there's no chance of a chain API result that's too large)
+- get address from a judge during demo?  :-)
+- HD wallet?
 - for multiple features: store in the local file; may change to array result for some methods
 - programmatic config for client app
 
