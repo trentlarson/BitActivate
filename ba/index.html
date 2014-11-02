@@ -74,12 +74,20 @@ $( document ).ready(function() {
     win.show();
 
     var btc_amount;
+	var symbol = '$';
 	var found_payment_transaction;
     parms['address'] = '1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P';   //Temporary
 
 	description = parms['description'];
     document.getElementById('description').innerHTML = 'Activate <strong>' + description + '</strong>';
-    document.getElementById('price').innerHTML = '$'+parms['price'];
+	if (parms['currency'] == 'USD')
+	  symbol = '$';
+
+	if (parms['currency'] == 'EUR')
+	  symbol = '&euro;';
+
+	  
+    document.getElementById('price').innerHTML = symbol+parms['price'];
     document.getElementById('currency').innerHTML = parms['currency'];
     $.ajax({
       url : "https://blockchain.info/tobtc?currency=" + parms['currency'] + "&value=" + parms['price'],
