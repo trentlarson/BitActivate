@@ -125,11 +125,11 @@ var licenseFilename = "BitActivate.json";
 //var licenseFilename = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + "/BitActivate.json";
 function writeToFile(feature, transaction) {
   var data = JSON.stringify({"feature":feature, "txnId":transaction});
-  var finalFilename = feature + '.' + licenseFilename;
+  var finalFilename = licenseFilename + feature;
   fs.writeFileSync(finalFilename, data);
 }
 function readFromFile(feature) {
-  var finalFilename = feature + '.' + licenseFilename;
+  var finalFilename = licenseFilename + feature;
   if (!fs.existsSync(finalFilename)) {
     return null;
   } else {

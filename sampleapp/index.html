@@ -11,9 +11,61 @@
   <script>
   var spawn = require('child_process').spawn;
   var FEATURE_SET = [
-    {code:"PREMIUM_SERVICE", desc:"Premium Service Silver", price:0.25, currency:"USD"},
-    {code:"PREMIUM_FEATURE", desc:"Premium Feature Gold", price:199, currency:"EUR"}
+    {code:"PREMIUM_SERVICE", desc:"Premium Service Silver", price:0.25, currency:"USD", isActive:false},
+    {code:"PREMIUM_FEATURE", desc:"Premium Feature Gold", price:199, currency:"EUR", isActive:false}
   ];
+
+  function findFeature(code) {
+    for (var i = 0; i < FEATURE_SET.length; i++) {
+      if (FEATURE_SET[i].code == code) {
+        return FEATURE_SET[i];
+      }
+    }
+    return null;
+  }
+  function allFeaturesOn() {
+    for (var i = 0; i < FEATURE_SET.length; i++) {
+      if (!FEATURE_SET[i].isActive) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  var resultFunction = function(feature, showThanks) {
+    var insideFeature = feature;
+
+    return function(exitCode) {
+      console.log('BitActivate library exited with exitCode ' + exitCode + ' for insideFeature ' + insideFeature.code);
+      $('#waitOnActivate').hide();
+      if (exitCode == 0 || exitCode == 1) {
+	// they closed the window or cancelled, so do nothing
+      } else if (exitCode == 99) {
+
+	if (showThanks) {
+	  $('#thanksPay').show();
+	}
+
+	if (allFeaturesOn()) {
+	  $('#accessDenied').hide();
+	  $('#payNow').hide();
+	  $('#pleasePay').hide();
+	  $('#premiumPanel').removeClass("panel-danger");
+	  if (showThanks) {
+	    $('#premiumPanel').addClass("panel-success");
+	  } else {
+	    $('#premiumPanel').addClass("panel-primary");
+	  }
+	}
+
+	$('#' + insideFeature.code + ' .unpaid').hide();
+	$('#' + insideFeature.code + ' .paid').show();
+      } else {
+	console.log("Ack!  BitActivate gave me this unrecognized exitCode: " + exitCode);
+      }
+    };
+  }
 
   function checkIsActive(feature) {
     $('#waitOnActivate').show();
@@ -31,24 +83,7 @@
       console.log('stderr: ' + data);
     });
 
-    baProc.on('close', function (code) {
-      console.log('BitActivate library exited with code ' + code);
-      $('#waitOnActivate').hide();
-      if (code == 0 || code == 1) {
-        // they closed the window or cancelled, so do nothing
-      } else if (code == 99) {
-        $('#accessDenied').hide();
-        $('#payNow').hide();
-        $('#pleasePay').hide();
-        $('#premiumPanel').removeClass("panel-danger");
-        $('.unpaid').hide();
-
-        $('#premiumPanel').addClass("panel-primary");
-        $('.paid').show();
-      } else {
-        console.log("Ack!  BitActivate gave me this unrecognized code: " + code);
-      }
-    });
+    baProc.on('close', resultFunction(feature, false));
   }
 
   function activateFeature(feature) {
@@ -66,25 +101,7 @@
       console.log('stderr: ' + data);
     });
 
-    baProc.on('close', function (code) {
-      console.log('BitActivate library exited with code ' + code);
-      $('#waitOnActivate').hide();
-      if (code == 0 || code == 1) {
-        // they closed the window or cancelled, so do nothing
-      } else if (code == 99) {
-        $('#accessDenied').hide();
-        $('#payNow').hide();
-        $('#pleasePay').hide();
-        $('#premiumPanel').removeClass("panel-danger");
-        $('.unpaid').hide();
-
-        $('#thanksPay').show();
-        $('#premiumPanel').addClass("panel-success");
-        $('.paid').show();
-      } else {
-        console.log("Ack!  BitActivate gave me this unrecognized code: " + code);
-      }
-    });
+    baProc.on('close', resultFunction(feature, true));
   }
 
   var makeActivateCall = function(feature) {
@@ -108,6 +125,7 @@
       nextFeature.find('.unpaid').show();
       nextFeature.find('.unpaid').click(makeActivateCall(FEATURE_SET[i]));
       nextFeature.find('.paid').hide();
+      nextFeature.attr('id', FEATURE_SET[i].code);
       checkIsActive(FEATURE_SET[i]);
     }
   });
