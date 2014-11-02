@@ -38,8 +38,10 @@
         $('#payNow').hide();
         $('#pleasePay').hide();
         $('#premiumPanel').removeClass("panel-danger");
+        $('.free').hide();
 
         $('#premiumPanel').addClass("panel-primary");
+        $('.premium').show();
       } else {
         console.log("Ack!  BitActivate gave me this unrecognized code: " + code);
       }
@@ -71,9 +73,11 @@
         $('#payNow').hide();
         $('#pleasePay').hide();
         $('#premiumPanel').removeClass("panel-danger");
+        $('.free').hide();
 
         $('#thanksPay').show();
         $('#premiumPanel').addClass("panel-success");
+        $('.premium').show();
       } else {
         console.log("Ack!  BitActivate gave me this unrecognized code: " + code);
       }
@@ -83,6 +87,7 @@
   $( document ).ready(function() {
     $('#waitOnActivate').hide();
     $('#thanksPay').hide();
+    $('.premium').hide();
     checkIsActive();
   });
   </script>
@@ -94,26 +99,27 @@
       <span id="thanksPay" class="alert-success"><strong>Thanks for your payment!  Enjoy your premium features.</strong></span>
     </div>
     <div class="panel panel-primary">
-      <div class="panel-heading">Free Features</div>
+      <div class="panel-heading"><h2>Free Features</h2></div>
       <div class="panel-body">
 	Enjoy my free features.
 	<ul>
-	  <li>O fortuna</li>
-	  <li>Velut luna</li>
-	  <li>Statu variabilis!</li>
+	  <li><input type="button" value="O fortuna"></li>
+	  <li><input type="button" value="Velut luna"></li>
+	  <li><input type="button" value="Statu variabilis!"></li>
 	</ul>
       </div>
     </div>
     <div id="premiumPanel" class="panel panel-danger">
-      <div class="panel-heading">Paid Premium Features</div>
+      <div class="panel-heading"><h2>Paid Premium Features</h2></div>
       <div class="panel-body">
 	<div style="row">
 	  <div class="col-md-4">
-	    If you pay, you can have these features, too!
+	    <span class="free">If you pay, you can have these features, too!</span>
+	    <span class="premium">Now you have these features, too!</span>
 	    <ul>
-	      <li>Semper crecis</li>
-	      <li>Aut decrecis</li>
-	      <li>Vita detestabilis...</li>
+	      <li><span class="free">Semper crecis</span><span class="premium"><input type="button" value="Semper crecis"></span></li>
+	      <li><span class="free">Aut decrecis</span><span class="premium"><input type="button" value="Aut decrecis"></span></li>
+	      <li><span class="free">Vita detestabilis</span><span class="premium"><input type="button" value="Vita detestabilis"></span></li>
 	    </ul>
 	  </div>
 	  <div class="col-md-8">
