@@ -41,10 +41,10 @@
         $('#payNow').hide();
         $('#pleasePay').hide();
         $('#premiumPanel').removeClass("panel-danger");
-        $('.free').hide();
+        $('.unpaid').hide();
 
         $('#premiumPanel').addClass("panel-primary");
-        $('.premium').show();
+        $('.paid').show();
       } else {
         console.log("Ack!  BitActivate gave me this unrecognized code: " + code);
       }
@@ -76,11 +76,11 @@
         $('#payNow').hide();
         $('#pleasePay').hide();
         $('#premiumPanel').removeClass("panel-danger");
-        $('.free').hide();
+        $('.unpaid').hide();
 
         $('#thanksPay').show();
         $('#premiumPanel').addClass("panel-success");
-        $('.premium').show();
+        $('.paid').show();
       } else {
         console.log("Ack!  BitActivate gave me this unrecognized code: " + code);
       }
@@ -90,17 +90,17 @@
   $( document ).ready(function() {
     $('#waitOnActivate').hide();
     $('#thanksPay').hide();
-    $('.premium').hide();
+    $('.paid').hide();
     var featureItem = $('.one-feature');
     var nextFeature;
     for (var i = 0; i < FEATURE_SET.length; i++) {
       nextFeature = featureItem.clone();
       featureItem.after(nextFeature);
-      nextFeature.find('.free').text(FEATURE_SET[i].desc);
-      nextFeature.find('input').attr('value', FEATURE_SET[i].desc);
+      nextFeature.find('.paid a').text(FEATURE_SET[i].desc);
+      nextFeature.find('input').attr('value', FEATURE_SET[i].desc + " -- Buy!");
       nextFeature.show();
-      nextFeature.find('.free').show();
-      nextFeature.find('.premium').hide();
+      nextFeature.find('.unpaid').show();
+      nextFeature.find('.paid').hide();
       checkIsActive(FEATURE_SET[i]);
     }
   });
@@ -117,9 +117,9 @@
       <div class="panel-body">
 	Enjoy my free features.
 	<ul>
-	  <li><input type="button" value="O fortuna"></li>
-	  <li><input type="button" value="Velut luna"></li>
-	  <li><input type="button" value="Statu variabilis!"></li>
+	  <li><a href="#">O fortuna</a></li>
+	  <li><a href="#">Velut luna</a></li>
+	  <li><a href="#">Statu variabilis!</a></li>
 	</ul>
       </div>
     </div>
@@ -128,10 +128,13 @@
       <div class="panel-body">
 	<div style="row">
 	  <div class="col-md-4">
-	    <span class="free">If you pay, you can have these features, too!</span>
-	    <span class="premium">Now you have these features, too!</span>
+	    <span class="unpaid">If you pay, you can have these features, too!</span>
+	    <span class="paid">Now you have these features, too!</span>
 	    <ul>
-	      <li class="one-feature" style="display:none;"><span class="free">Semper crecis</span><span class="premium"><input type="button" value="Semper crecis"></span></li>
+	      <li class="one-feature" style="display:none;">
+		<span class="unpaid"><input type="button" value="Semper crecis"></span>
+		<span class="paid"><a href="#">Semper crecis</a></span>
+	      </li>
 	    </ul>
 	  </div>
 	  <div class="col-md-8">
