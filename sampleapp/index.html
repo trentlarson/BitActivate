@@ -16,7 +16,7 @@
     $('#waitOnActivate').show();
 
     var nwProc = process.execPath;
-    baProc = spawn(nwProc, ['../ba', '{"function":"IsActive","feature":FEATURE_CODE}']);
+    baProc = spawn(nwProc, ['../ba', '{"function":"IsActive","feature":"' + FEATURE_CODE + '"}']);
 
     baProc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
@@ -49,7 +49,7 @@
   function spawnOther() {
     $('#waitOnActivate').show();
     var nwProc = process.execPath;
-    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":FEATURE_CODE, "description":"A Premium Feature", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":0.25,"currency":"USD"}']);
+    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"' + FEATURE_CODE + '", "description":"A Premium Feature", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":0.25,"currency":"USD"}']);
 
     baProc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
