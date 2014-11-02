@@ -5,7 +5,7 @@ for Money2020 Hackathon
 
 Remaining tasks:
 - multiple features: see cost difference, display difference, only one turned on at a time
--- allow selction of each
+-- in IsActive call, check only for given feature
 -- remove hard-coded FEATURE_SET[0] references
 -- optimization: make one call to library for all features (instead of calling one-by-one, at startup)
 - use new address before demo (so there's no chance of a chain API result that's too large)
