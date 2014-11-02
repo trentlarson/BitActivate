@@ -10,14 +10,13 @@
 
   <script>
   var spawn = require('child_process').spawn;
-  var FEATURE_CODE = "PREMIUM_FEATURE";
-  var FEATURE_DESC = "Premium Features";
+  var FEATURE_SET = [{code:"PREMIUM_FEATURE", desc:"Premium Features"}]
 
-  function checkIsActive() {
+  function checkIsActive(feature) {
     $('#waitOnActivate').show();
 
     var nwProc = process.execPath;
-    baProc = spawn(nwProc, ['../ba', '{"function":"IsActive","feature":"' + FEATURE_CODE + '"}']);
+    baProc = spawn(nwProc, ['../ba', '{"function":"IsActive","feature":"' + feature.code + '"}']);
 
     baProc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
@@ -49,10 +48,10 @@
     });
   }
 
-  function spawnOther() {
+  function activateFeature(feature) {
     $('#waitOnActivate').show();
     var nwProc = process.execPath;
-    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"' + FEATURE_CODE + '", "description":"' + FEATURE_DESC + '", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":0.25,"currency":"USD"}']);
+    baProc = spawn(nwProc, ['../ba', '{"function":"Activate","feature":"' + feature.code + '", "description":"' + feature.desc + '", "address":"1NCzNp6Fkh8YeHf4H3BwUoiPvPkJ1j1f8P","price":0.25,"currency":"USD"}']);
 
     baProc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
@@ -86,11 +85,13 @@
   }
 
   $( document ).ready(function() {
-    $('#feature-desc h2').innerHTML = $('#feature-desc h2').innerHTML + " " + FEATURE_DESC;
+    $('#feature-desc h2').innerHTML = $('#feature-desc h2').innerHTML + " " + FEATURE_SET[0].desc;
     $('#waitOnActivate').hide();
     $('#thanksPay').hide();
     $('.premium').hide();
-    checkIsActive();
+    for (var i = 0; i < FEATURE_SET.length; i++) {
+      checkIsActive(FEATURE_SET[i]);
+    }
   });
   </script>
   </head>
@@ -126,7 +127,7 @@
 	  </div>
 	  <div class="col-md-8">
 	    <img id="accessDenied" src="lib/access-denied.jpeg" height="100">
-	    <a href="#" onclick="javascript:spawnOther();">
+	    <a href="#" onclick="javascript:activateFeature(FEATURE_SET[0]);">
 	      <img id="payNow" src="lib/pay-now.png" height="100">
 	    </a>
 	    <img id="waitOnActivate" src="lib/loadera64.gif" height="50" width="50"/>
